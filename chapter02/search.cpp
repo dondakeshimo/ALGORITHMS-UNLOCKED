@@ -6,15 +6,17 @@ using namespace std;
 
 int Linear_Search(string* A, int n, string x);
 int Better_Linear_Search(string* A, int n, string x);
+int Binary_Search(string* A, int n, string x);
 
 
 int main()
 {
-    int n = 3;
-    string A[n] = {"Alex", "Bob", "Chris"};
-    string x = "Bob";
+    int n = 5;
+    string A[n] = {"Alex", "Bob", "Chris", "Dave", "Eathern"};
+    string x = "Dave";
 
-    return Better_Linear_Search(A, n, x);
+    cout << "answer = " << Binary_Search(A, n, x) << endl;
+    return 0;
 }
 
 
@@ -26,8 +28,6 @@ int Linear_Search(string* A, int n, string x)
         if (x == A[i]) answer = i;
     }
 
-    cout <<  answer << endl;
-
     return answer;
 }
 
@@ -38,12 +38,28 @@ int Better_Linear_Search(string* A, int n, string x)
 
     for (int i = 0; i < n; i++) {
         if (x == A[i]) {
-            cout << "answer = " <<  i << endl;
             return i;
         }
     }
 
-    cout <<  "answer = " << -1 << endl;
+    return -1;
+}
+
+
+int Binary_Search(string* A, int n, string x)
+{
+    int p = 0, r = n - 1;
+    int q;
+
+    while (p <= r) {
+        q = (p + r) / 2;
+        if (A[q] == x) {
+            return q;
+        } else {
+            if (A[q] > x) r = q - 1;
+            else p = q + 1;
+        }
+    }
 
     return -1;
 }
