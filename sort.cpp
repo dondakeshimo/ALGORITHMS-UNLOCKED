@@ -6,6 +6,8 @@ using namespace std;
 
 string* Selection_Sort(string* A, int n);
 string* Insertion_Sort(string* A, int n);
+string* Merge_Sort(string* A, int p, int r);
+string* Merge(string* A, int p, int q, int r);
 
 
 int main()
@@ -15,7 +17,7 @@ int main()
     string x = "Alex";
     string* answer;
 
-    answer = Insertion_Sort(A, n);
+    answer = Merge_Sort(A, 0, 4);
     for (int i = 0; i < n; i++) {
         cout << answer[i] << endl;
     }
@@ -59,6 +61,54 @@ string* Insertion_Sort(string* A, int n)
         }
 
         A[j + 1] = key;
+    }
+
+    return A;
+}
+
+
+string* Merge_Sort(string* A, int p, int r)
+{
+    if (p >= r) return A;
+    else {
+        int q = (p + r) / 2;
+        Merge_Sort(A, p, q);
+        Merge_Sort(A, q + 1, r);
+        Merge(A, p, q, r);
+    }
+
+    return A;
+}
+
+
+string* Merge(string* A, int p, int q, int r)
+{
+    int n1 = q - p + 1;
+    int n2 = r - q;
+    string B[n1 + 1], C[n2 + 1];
+    const string inf = "ZZZZZZZZZZ";
+
+    for (int i = 0; i < n1; i++) {
+        B[i] = A[p + i];
+    }
+
+    for (int i = 0; i < n2; i++) {
+        C[i] = A[q + 1 + i];
+    }
+
+    B[n1] = inf;
+    C[n2] = inf;
+
+    int i = 0, j = 0;
+
+    for (int k = p; k < r + 1; k++) {
+        if (B[i] <= C[j]) {
+            A[k] = B[i];
+            i++;
+        } else {
+            A[k] = C[j];
+            j++;
+        }
     }
 
     return A;
