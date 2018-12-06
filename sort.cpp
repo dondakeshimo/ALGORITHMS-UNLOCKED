@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <string>
 #include <iostream>
+#include <utility>
 using namespace std;
 
 
@@ -8,6 +9,8 @@ string* Selection_Sort(string* A, int n);
 string* Insertion_Sort(string* A, int n);
 string* Merge_Sort(string* A, int p, int r);
 string* Merge(string* A, int p, int q, int r);
+string* Quick_Sort(string* A, int p, int r);
+int Partition(string* A, int p, int r);
 
 
 int main()
@@ -17,7 +20,7 @@ int main()
     string x = "Alex";
     string* answer;
 
-    answer = Merge_Sort(A, 0, 4);
+    answer = Quick_Sort(A, 0, 4);
     for (int i = 0; i < n; i++) {
         cout << answer[i] << endl;
     }
@@ -112,4 +115,33 @@ string* Merge(string* A, int p, int q, int r)
     }
 
     return A;
+}
+
+
+string* Quick_Sort(string* A, int p, int r)
+{
+    if (p >= r) return A;
+    else {
+        int q = Partition(A, p, r);
+        Quick_Sort(A, p, q - 1);
+        Quick_Sort(A, q + 1, r);
+    }
+
+    return A;
+}
+
+
+int Partition(string* A, int p, int r)
+{
+    int q = p;
+
+    for (int u = p; u < r; u++) {
+        if (A[u] <= A[r]) {
+            swap(A[q], A[u]);
+            q++;
+        }
+    }
+
+    swap(A[q], A[r]);
+    return q;
 }
