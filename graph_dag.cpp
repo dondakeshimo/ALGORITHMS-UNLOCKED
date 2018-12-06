@@ -10,13 +10,15 @@ using namespace std;
 vector<int> Topological_Sort(vector<vector<int>>& G);
 void Relax(vector<int>& shortest, vector<int>& pred,
            vector<vector<int>>& weight, int u, int v);
-vector<int> Dag_Shortest_Paths(vector<vector<int>>& G,
-                               vector<vector<int>>& weight, int n, int s);
+int Dag_Shortest_Paths(vector<vector<int>>& G, vector<vector<int>>& weight);
 
 
 int main()
 {
-    int n = 14;
+    cout << "-------------" << endl;
+    cout << "Topological sort" << endl;
+    cout << "-------------" << endl;
+
     vector<vector<int>> G{
         { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -33,16 +35,65 @@ int main()
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     };
-    vector<int> answer;
+    vector<int> answer_1;
 
-    cout << "-------------" << endl;
-    cout << "Topological sort" << endl;
-    cout << "-------------" << endl;
-
-    answer = Topological_Sort(G);
-    for (int i = 0; i < n; i++) {
-        cout << answer[i] << endl;
+    answer_1 = Topological_Sort(G);
+    for (int i = 0; i < G.size(); i++) {
+        cout << answer_1[i] << endl;
     }
+
+    cout << "-------------" << endl;
+    cout << "Dag shortest paths" << endl;
+    cout << "-------------" << endl;
+
+    vector<vector<int>> V{
+        { 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    };
+    vector<vector<int>> weight{
+        { 0, -3, -6, 0, -4, 0, 0, 0, 0, -4, 0, 0, 0, 0, -3, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, -15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, -15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -4, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -3, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    };
+    int answer_2;
+
+    answer_2 = Dag_Shortest_Paths(V, weight);
+    cout << answer_2 << endl;
 }
 
 
@@ -77,9 +128,9 @@ vector<int> Topological_Sort(vector<vector<int>>& G)
     }
 
     // this process is to linear order same as book number
-    for (int i = 0; i < G.size(); i++) {
-        linear_order[i]++;
-    }
+    // for (int i = 0; i < G.size(); i++) {
+    //     linear_order[i]++;
+    // }
 
     return linear_order;
 }
@@ -95,20 +146,21 @@ void Relax(vector<int>& shortest, vector<int>& pred,
 }
 
 
-vector<int> Dag_Shortest_Paths(vector<vector<int>>& G,
-                               vector<vector<int>>& weight, int n, int s)
+int Dag_Shortest_Paths(vector<vector<int>>& G, vector<vector<int>>& weight)
 {
     vector<int> l = Topological_Sort(G);
-    vector<int> shortest(n, numeric_limits<int>::max());
-    vector<int> pred(n, numeric_limits<int>::max());
+    vector<int> shortest(G.size(), numeric_limits<int>::max());
+    vector<int> pred(G.size(), numeric_limits<int>::max());
 
-    shortest[s] = 0;
+    shortest[0] = 0;
 
     int u;
     for (int i = 0; i < l.size(); i++) {
         u = l[i];
-        for (int v = 0; v < n; v++) {
+        for (int v = 0; v < G.size(); v++) {
             if (G[u][v] == 1) Relax(shortest, pred, weight, u, v);
         }
     }
+
+    return shortest.back();
 }
