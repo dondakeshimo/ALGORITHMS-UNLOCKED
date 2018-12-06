@@ -12,6 +12,10 @@ string* Merge(string* A, int p, int q, int r);
 string* Quick_Sort(string* A, int p, int r);
 int Partition(string* A, int p, int r);
 int* Really_Simple_Sort(int* A, int n);
+int* Count_Keys_Equal(int* A, int n, int m);
+int* Count_Keys_Less(int* equal_array, int m);
+int* Rearrange(int* A, int* less, int n, int m);
+int* Counting_Sort(int* A, int n, int m);
 
 
 int main()
@@ -32,6 +36,14 @@ int main()
     int* answer_2 = Really_Simple_Sort(B, n);
     for (int i = 0; i < n; i++) {
         cout << answer_2[i] << endl;
+    }
+
+    cout << "-------------" << endl;
+
+    int C[n] = {2, 0, 2, 1, 2};
+    int* answer_3 = Counting_Sort(C, n, 3);
+    for (int i = 0; i < n; i++) {
+        cout << answer_3[i] << endl;
     }
 
     return 0;
@@ -171,4 +183,73 @@ int* Really_Simple_Sort(int* A, int n)
     }
 
     return A;
+}
+
+
+int* Count_Keys_Equal(int* A, int n, int m)
+{
+    int equal_array[m] = {0};
+    int key;
+
+    for (int i = 0; i < n; i++) {
+        key = A[i];
+        equal_array[key]++;
+    }
+
+    return equal_array;
+}
+
+
+int* Count_Keys_Less(int* equal_array, int m)
+{
+    cout << 11 << endl;
+    int less[m] = {0};
+
+    cout << "kokokara" << endl;
+
+    for (int i = 0; i < m; i++) {
+        cout << equal_array[i] << endl;
+    }
+
+    cout << 12 << endl;
+    for (int j = 1; j < m; j++) {
+        cout << j << endl;
+        cout << less[j] << endl;
+        cout << less[j - 1] << endl;
+        cout << equal_array[j - 1] << endl;
+        less[j] = less[j - 1] + equal_array[j - 1];
+        cout << j << endl;
+    }
+
+    cout << 14 << endl;
+    return less;
+}
+
+
+int* Rearrange(int* A, int* less, int n, int m)
+{
+    int B[n], next[m], key, index;
+
+    for (int j = 0; j < m; j++) {
+        next[j] = less[j] + 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        key = A[i];
+        index = next[key];
+        B[index] = A[i];
+        next[key]++;
+    }
+
+    return B;
+}
+
+
+int* Counting_Sort(int* A, int n, int m)
+{
+    int* equal_array = Count_Keys_Equal(A, n, m);
+    int* less = Count_Keys_Less(equal_array, m);
+    int* B = Rearrange(A, less, n, m);
+
+    return B;
 }
