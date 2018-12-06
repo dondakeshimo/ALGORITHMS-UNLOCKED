@@ -11,6 +11,7 @@ string* Merge_Sort(string* A, int p, int r);
 string* Merge(string* A, int p, int q, int r);
 string* Quick_Sort(string* A, int p, int r);
 int Partition(string* A, int p, int r);
+int* Really_Simple_Sort(int* A, int n);
 
 
 int main()
@@ -24,6 +25,15 @@ int main()
     for (int i = 0; i < n; i++) {
         cout << answer[i] << endl;
     }
+
+    cout << "-------------" << endl;
+
+    int B[n] = {2, 1, 2, 1, 2};
+    int* answer_2 = Really_Simple_Sort(B, n);
+    for (int i = 0; i < n; i++) {
+        cout << answer_2[i] << endl;
+    }
+
     return 0;
 }
 
@@ -144,4 +154,21 @@ int Partition(string* A, int p, int r)
 
     swap(A[q], A[r]);
     return q;
+}
+
+
+int* Really_Simple_Sort(int* A, int n)
+{
+    int k = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (A[i] == 1) k++;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (i < k) A[i] = 1;
+        else A[i] = 2;
+    }
+
+    return A;
 }
