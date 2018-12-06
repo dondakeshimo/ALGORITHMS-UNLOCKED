@@ -6,7 +6,7 @@
 using namespace std;
 
 
-vector<int> Topological_Sort(vector<vector<int>> G, int n);
+vector<int> Topological_Sort(vector<vector<int>>& G, int n);
 
 
 int main()
@@ -41,7 +41,7 @@ int main()
 }
 
 
-vector<int> Topological_Sort(vector<vector<int>> G, int n)
+vector<int> Topological_Sort(vector<vector<int>>& G, int n)
 {
     vector<int> in_degree(n, 0);
     vector<int> next;
