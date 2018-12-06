@@ -23,14 +23,46 @@ int main()
 {
     int n = 5;
     string A[n] = {"Alex", "Bob", "Xhris", "Dave", "Eathern"};
-    string x = "Alex";
     string* answer;
+
+    cout << "-------------" << endl;
+    cout << "Selection sort" << endl;
+    cout << "-------------" << endl;
+
+    answer = Selection_Sort(A, n);
+    for (int i = 0; i < n; i++) {
+        cout << answer[i] << endl;
+    }
+
+    cout << "-------------" << endl;
+    cout << "Insertion sort" << endl;
+    cout << "-------------" << endl;
+
+    answer = Insertion_Sort(A, n);
+    for (int i = 0; i < n; i++) {
+        cout << answer[i] << endl;
+    }
+
+    cout << "-------------" << endl;
+    cout << "Merge sort" << endl;
+    cout << "-------------" << endl;
+
+    answer = Merge_Sort(A, 0, 4);
+    for (int i = 0; i < n; i++) {
+        cout << answer[i] << endl;
+    }
+
+    cout << "-------------" << endl;
+    cout << "Quick sort" << endl;
+    cout << "-------------" << endl;
 
     answer = Quick_Sort(A, 0, 4);
     for (int i = 0; i < n; i++) {
         cout << answer[i] << endl;
     }
 
+    cout << "-------------" << endl;
+    cout << "Really simple sort" << endl;
     cout << "-------------" << endl;
 
     int B[n] = {2, 1, 2, 1, 2};
@@ -39,6 +71,8 @@ int main()
         cout << answer_2[i] << endl;
     }
 
+    cout << "-------------" << endl;
+    cout << "Counting sort" << endl;
     cout << "-------------" << endl;
 
     int C[n] = {2, 0, 2, 1, 2};
