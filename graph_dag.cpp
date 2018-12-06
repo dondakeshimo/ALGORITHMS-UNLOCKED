@@ -3,10 +3,14 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <limits>
 using namespace std;
 
 
 vector<int> Topological_Sort(vector<vector<int>>& G, int n);
+void Rerax(vector<int>& shortest, vector<int>& pred,
+           vector<vector<int>>& weight, int u, int v);
+vector<int> Dag_Shortest_Paths(vector<vector<int>>& G, int n, int s);
 
 
 int main()
@@ -77,4 +81,32 @@ vector<int> Topological_Sort(vector<vector<int>>& G, int n)
     }
 
     return linear_order;
+}
+
+
+void Rerax(vector<int>& shortest, vector<int>& pred,
+           vector<vector<int>>& weight, int u, int v)
+{
+    if (shortest[u] + weithg[u][v] < shortest[v]) {
+        shortest[v] = shortest[u] + weight[u][v];
+        pred[v] = u;
+    }
+}
+
+
+vector<int> Dag_Shortest_Paths(vector<vector<int>>& G, int n, int s)
+{
+    vector<int> l = Topological_Sort(G, n);
+    vector<int> shortest(n, numeric_limits<int>::max());
+    vector<int> pred(n, NULL);
+
+    shortest[s] = 0;
+
+    int u;
+    for (int i = 0; i < l.size(); i++) {
+        u = l[i];
+        for (int v = 0; v < n; v++) {
+            if (G[u][v] == 1) Relax(shortest, pred, weight, u, v);
+        }
+    }
 }
