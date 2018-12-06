@@ -202,26 +202,12 @@ int* Count_Keys_Equal(int* A, int n, int m)
 
 int* Count_Keys_Less(int* equal_array, int m)
 {
-    cout << 11 << endl;
     int less[m] = {0};
 
-    cout << "kokokara" << endl;
-
-    for (int i = 0; i < m; i++) {
-        cout << equal_array[i] << endl;
-    }
-
-    cout << 12 << endl;
     for (int j = 1; j < m; j++) {
-        cout << j << endl;
-        cout << less[j] << endl;
-        cout << less[j - 1] << endl;
-        cout << equal_array[j - 1] << endl;
         less[j] = less[j - 1] + equal_array[j - 1];
-        cout << j << endl;
     }
 
-    cout << 14 << endl;
     return less;
 }
 
