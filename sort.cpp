@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <utility>
+#include <vector>
 using namespace std;
 
 
@@ -186,38 +187,39 @@ int* Really_Simple_Sort(int* A, int n)
 }
 
 
-int* Count_Keys_Equal(int* A, int n, int m)
+int* Count_Keys_Equal(int* A, int* equal_array, int n, int m)
 {
-    int equal_array[m] = {0};
     int key;
+
+    for (int j = 0; j < m; j++) {
+        equal_array[j] = 0;
+    }
 
     for (int i = 0; i < n; i++) {
         key = A[i];
         equal_array[key]++;
     }
-
-    return equal_array;
 }
 
 
-int* Count_Keys_Less(int* equal_array, int m)
+int* Count_Keys_Less(int* equal_array, int* less, int m)
 {
-    int less[m] = {0};
+    for (int j = 0; j < m; j++) {
+        less[j] = 0;
+    }
 
     for (int j = 1; j < m; j++) {
         less[j] = less[j - 1] + equal_array[j - 1];
     }
-
-    return less;
 }
 
 
-int* Rearrange(int* A, int* less, int n, int m)
+int* Rearrange(int* A, int* B, int* less, int n, int m)
 {
-    int B[n], next[m], key, index;
+    int next[m], key, index;
 
     for (int j = 0; j < m; j++) {
-        next[j] = less[j] + 1;
+        next[j] = less[j];
     }
 
     for (int i = 0; i < n; i++) {
@@ -226,16 +228,20 @@ int* Rearrange(int* A, int* less, int n, int m)
         B[index] = A[i];
         next[key]++;
     }
-
-    return B;
 }
 
 
 int* Counting_Sort(int* A, int n, int m)
 {
-    int* equal_array = Count_Keys_Equal(A, n, m);
-    int* less = Count_Keys_Less(equal_array, m);
-    int* B = Rearrange(A, less, n, m);
+    int equal_array[m], less[m], B[n];
+    Count_Keys_Equal(A, equal_array, n, m);
+    Count_Keys_Less(equal_array, less, m);
+    Rearrange(A, B, less, n, m);
 
-    return B;
+    // It is not goog sample. I just want not to use vector.
+    for (int i = 0; i < n; i++) {
+        A[i] = B[i];
+    }
+
+    return A;
 }
