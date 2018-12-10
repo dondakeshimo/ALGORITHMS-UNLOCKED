@@ -21,30 +21,16 @@ int main()
     cout << "-------------" << endl;
 
     vector<vector<int>> V{
-        { 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 6, 0, 4, 0 },  // s
+        { 0, 0, 3, 2, 0 },  // t
+        { 0, 0, 0, 0, 4 },  // x
+        { 0, 1, 9, 0, 3 },  // y
+        { 7, 0, 5, 0, 0 },  // z
+    //    s, t, x, y, z
     };
     int answer;
 
-    answer = Dijkstra_array(V, 0, 14);
+    answer = Dijkstra_array(V, 0, 4);
     cout << answer << endl;
 }
 
@@ -52,20 +38,30 @@ int main()
 void Insert_array(vector<int>& Q, vector<vector<int>>& V)
 {
     for (int i = 0; i < V.size(); i++) {
-        queue[i] = i;
+        Q[i] = i;
     }
 }
 
 
-int Extract_Min_array(vector<int>& shortest)
+int Extract_Min_array(vector<int> &Q, vector<int>& shortest)
 {
+    int q;
+    int u;
+    int del_idx;
     int min = numeric_limits<int>::max();
 
-    for (int i = 0; i < shortest.size(); i++) {
-        if (shortest[i] < min) min = shortest[i];
+    for (int i = 0; i < Q.size(); i++) {
+        q = Q[i];
+        if (shortest[q] < min) {
+            min = shortest[q];
+            del_idx = i;
+            u = q;
+        }
     }
 
-    return min;
+    Q.erase(Q.begin() + del_idx);
+
+    return u;
 
 }
 
@@ -84,21 +80,26 @@ int Dijkstra_array(vector<vector<int>> &V, int s, int goal)
 {
     vector<int> shortest(V.size(), numeric_limits<int>::max());
     vector<int> pred(V.size(), numeric_limits<int>::max());
-    vector<int> Q(V.size())
+    vector<int> Q(V.size());
 
     shortest[s] = 0;
 
-    Insert_array(Q, V)
+    Insert_array(Q, V);
 
     int u;
 
     while (!Q.empty()) {
-        u = Extract_Min_array(shortest);
+        u = Extract_Min_array(Q, shortest);
 
-        for (int v = 0; v < G.size(); v++) {
-            if (G[u][v] != 1) Relax(shortest, pred, V, u, v);
+        for (int v = 0; v < V.size(); v++) {
+            if (V[u][v] != 0) Relax(shortest, pred, V, u, v);
         }
     }
+
+    // show all shortest time
+    // for (int i = 0; i < shortest.size(); i++) {
+    //     cout << i << ": " << shortest[i] << endl;
+    // }
 
     return shortest[goal];
 }
