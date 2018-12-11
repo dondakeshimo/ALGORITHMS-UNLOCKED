@@ -11,9 +11,9 @@ void Insert_array(vector<int>& Q, vector<vector<int>>& V);
 int Extract_Min_array(vector<int>& shortest);
 void Relax(vector<int>& shortest, vector<int>& pred,
            vector<vector<int>>& V, int u, int v);
-int Dijkstra_array(vector<vector<int>>& V, int s, int goal);
+vector<int> Dijkstra_array(vector<vector<int>>& V, int s);
 
-int Bellman_Ford(vector<vector<int>>& V, int s, int goal);
+vector<int> Bellman_Ford(vector<vector<int>>& V, int s);
 
 
 int main()
@@ -30,18 +30,26 @@ int main()
         { 7, 0, 5, 0, 0 },  // z
     //    s, t, x, y, z
     };
-    int answer;
+    vector<int> answer;
 
-    answer = Dijkstra_array(V, 0, 4);
-    cout << answer << endl;
+    answer = Dijkstra_array(V, 0);
+
+    // show all shortest time
+    for (int i = 0; i < answer.size(); i++) {
+        cout << i << ": " << answer[i] << endl;
+    }
 
 
     cout << "-------------" << endl;
     cout << "Bellman Ford" << endl;
     cout << "-------------" << endl;
 
-    answer = Bellman_Ford(V, 0, 4);
-    cout << answer << endl;
+    answer = Bellman_Ford(V, 0);
+
+    // show all shortest time
+    for (int i = 0; i < answer.size(); i++) {
+        cout << i << ": " << answer[i] << endl;
+    }
 }
 
 
@@ -86,7 +94,7 @@ void Relax(vector<int>& shortest, vector<int>& pred,
 }
 
 
-int Dijkstra_array(vector<vector<int>> &V, int s, int goal)
+vector<int> Dijkstra_array(vector<vector<int>> &V, int s)
 {
     vector<int> shortest(V.size(), numeric_limits<int>::max());
     vector<int> pred(V.size(), numeric_limits<int>::max());
@@ -106,16 +114,11 @@ int Dijkstra_array(vector<vector<int>> &V, int s, int goal)
         }
     }
 
-    // show all shortest time
-    for (int i = 0; i < shortest.size(); i++) {
-        cout << i << ": " << shortest[i] << endl;
-    }
-
-    return shortest[goal];
+    return shortest;
 }
 
 
-int Bellman_Ford(vector<vector<int>> &V, int s, int goal)
+vector<int> Bellman_Ford(vector<vector<int>> &V, int s)
 {
     vector<int> shortest(V.size(), numeric_limits<int>::max());
     vector<int> pred(V.size(), numeric_limits<int>::max());
@@ -130,10 +133,5 @@ int Bellman_Ford(vector<vector<int>> &V, int s, int goal)
         }
     }
 
-    // show all shortest time
-    for (int i = 0; i < shortest.size(); i++) {
-        cout << i << ": " << shortest[i] << endl;
-    }
-
-    return shortest[goal];
+    return shortest;
 }
